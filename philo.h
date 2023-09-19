@@ -5,58 +5,67 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: jmarinho <jmarinho@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/09/04 12:44:29 by jmarinho          #+#    #+#             */
-/*   Updated: 2023/09/06 17:23:19 by jmarinho         ###   ########.fr       */
+/*   Created: 2023/09/19 15:31:39 by jmarinho          #+#    #+#             */
+/*   Updated: 2023/09/19 15:40:01 by jmarinho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef  PHILO_H
+#ifndef PHILO_H
 # define PHILO_H
 
-#include<stdio.h>
-#include<unistd.h>
-#include<stdlib.h>
-#include<sys/time.h>
-#include<pthread.h>
+# include <string.h>
+# include <stdio.h>
+# include <stdlib.h>
+# include <unistd.h>
+# include <sys/time.h>
+# include <pthread.h>
 
-typedef struct s_philosophers
+# define TRUE 1
+# define FALSE 0
+
+typedef struct s_philo
 {
-    int id;
-    int l_fork;
-    int r_fork;
-    int eat_count;
-    int last_time_eat;
-    struct s_project *project;
-    pthread_t thread;
-}   t_philosophers;
+	int				id;
+	int				fork_left;
+	int				fork_right;
+	int				times_eaten;
+	long long		last_eaten;
+	struct s_project	*data;
+	pthread_t		thread;
+
+}	t_philo;
 
 typedef struct s_project
 {
-    int nbr_philos;
-    int time_to_die;
-    int time_to_eat;
-    int time_to_sleep;
-    int times_must_eat;
-    t_philosophers *philo;
-    long start_time;
-    int finish_flag;
-    int is_full;
-    pthread_mutex_t *fork_mutex;
-    pthread_mutex_t print_mutex;
-    pthread_mutex_t eat_mutex;
-    pthread_mutex_t finish_mutex;
-}   t_project;
+	int				n_philo;
+	int				time_to_die;
+	int				time_to_eat;
+	int				time_to_sleep;
+	int				times_must_eat;
+	int				n_philo_full;
+	int				end_flag;
+	long long		start_time;
+	t_philo			*philo;
+	pthread_mutex_t	*mtx_fork;
+	pthread_mutex_t	mtx_print;
+	pthread_mutex_t	mtx_eat;
+	pthread_mutex_t	mtx_end;
+}	t_project;
 
-void *start_philosophers(void *ptr);
-void exit_error(char *msg, int clear, t_project *project);
-long now(void);
-int ft_atoi(char *str);
-void	philo_monitoring(t_project *project);
-void	finish_dinner(t_project *project);
-void	destroy_padlocks(t_project *project);
-int is_time_to_finish(t_philosophers *philosophers, int finish_order);
-void	print_action(t_philosophers *philosophers, char *status);
-void	advance_time(t_philosophers *philosophers, long stop);
-int	is_someone_dead_or_full(t_philosophers *philosophers);
+void		check_args(int ac, char **av);
+void		initialize_project(t_project *project, int ac, char **av);
+void		initialize_mtxs(t_project *project);
+void		initialize_philo(t_project *project);
+void		initialize_thread(t_project *project);
+void		*start_simulation(void *philo);
+void		surveillance(t_project *d);
+int			dead_or_full(t_project *d, t_philo *p);
+int			should_simulation_end(t_philo *philo, int should_end);
+void		print_status(t_philo *philo, char *str);
+void		eat(t_philo *philo);
+int			ft_atoi(const char *str);
+void		exit_error(char *str, t_project *project, int flag);
+void		free_mtxs(t_project *project);
+long long	get_current_time(void);
 
 #endif
