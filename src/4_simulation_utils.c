@@ -6,73 +6,86 @@
 /*   By: jmarinho <jmarinho@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/19 15:31:56 by jmarinho          #+#    #+#             */
-/*   Updated: 2023/09/19 15:40:30 by jmarinho         ###   ########.fr       */
+/*   Updated: 2023/09/22 15:42:54 by jmarinho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../philo.h"
 
-/*
-	this is where all the simulation helper functions are
-	1) should_simulation_end: used to check if the simulation should end
-		- here we assign 1 to the end_flag if we want to end the simulation
-		- we also return TRUE if the simulation should end and FALSE otherwise
-	2) print_status: used to print the status of the philosopher
-		- if we don't pass a string, it means that all philosophers have eaten
-		  the number of times they should
-	3) eat: this is the function where we simulate the philosopher eating
-		- reminder: the philosopher can only eat if he has both forks
-*/
-
-void	eat(t_philo *philo)
+int	philo_grab_forks(t_philo *philo)
 {
+	if (philo->project->should_end == 1
+		|| philo->project->nbr_philo_full == philo->project->nbr_philo)
+		return (-1);
 	if (philo->id % 2 == 0)
 	{
-		pthread_mutex_lock(&philo->data->mtx_fork[philo->fork_left]);
-		pthread_mutex_lock(&philo->data->mtx_fork[philo->fork_right]);
+		pthread_mutex_lock(philo->fork_left);
+		print_status(philo, YELLOW"has taken a fork"RESET);
+		pthread_mutex_lock(philo->fork_right);
+		print_status(philo, YELLOW"has taken a fork"RESET);
 	}
 	else
 	{
-		pthread_mutex_lock(&philo->data->mtx_fork[philo->fork_right]);
-		pthread_mutex_lock(&philo->data->mtx_fork[philo->fork_left]);
+		pthread_mutex_lock(philo->fork_right);
+		print_status(philo, YELLOW"has taken a fork"RESET);
+		pthread_mutex_lock(philo->fork_left);
+		print_status(philo, YELLOW"has taken a fork"RESET);
 	}
-	print_status(philo, "has taken a fork");
-	print_status(philo, "has taken a fork");
-	print_status(philo, "is eating");
-	usleep(philo->data->time_to_eat * 1000);
-	pthread_mutex_lock(&philo->data->mtx_eat);
+	return (0);
+}
+
+int	philo_is_eating(t_philo *philo)
+{
+	if (philo->project->should_end == 1
+		|| (philo->project->nbr_philo_full == philo->project->nbr_philo))
+	{
+		pthread_mutex_unlock(philo->fork_right);
+		pthread_mutex_unlock(philo->fork_left);
+		return (-1);
+	}
+	print_status(philo, BLUE"is eating"RESET);
+	philo->last_meal = get_current_time();
 	philo->times_eaten++;
-	philo->last_eaten = get_current_time();
-	pthread_mutex_unlock(&philo->data->mtx_eat);
-	pthread_mutex_unlock(&philo->data->mtx_fork[philo->fork_right]);
-	pthread_mutex_unlock(&philo->data->mtx_fork[philo->fork_left]);
+	if (philo->project->times_must_eat != -1)
+		if (philo->times_eaten == philo->project->times_must_eat)
+			philo->project->nbr_philo_full++;
+	usleep(philo->project->time_to_eat * 1000);
+	pthread_mutex_unlock(philo->fork_left);
+	pthread_mutex_unlock(philo->fork_right);
+	return (0);
+}
+
+int	philo_is_sleeping(t_philo *philo)
+{
+	if (philo->project->should_end == 1
+		|| philo->project->nbr_philo_full == philo->project->nbr_philo)
+		return (-1);
+	print_status(philo, PURPLE"is sleeping"RESET);
+	usleep(philo->project->time_to_sleep * 1000);
+	return (0);
 }
 
 void	print_status(t_philo *philo, char *str)
 {
 	long long	timestamp;
 
-	pthread_mutex_lock(&philo->data->mtx_print);
 	if (should_simulation_end(philo, FALSE) == FALSE)
 	{
-		timestamp = get_current_time() - philo->data->start_time;
+		timestamp = get_current_time() - philo->project->start_time;
 		printf("%lld %d %s\n", timestamp, philo->id, str);
 	}
 	if (str == NULL)
-		printf("All philosophers ate %d times\n", philo->data->times_must_eat);
-	pthread_mutex_unlock(&philo->data->mtx_print);
+		printf(GREEN"All philosophers ate %d times\n"RESET,
+			philo->project->times_must_eat);
 }
 
 int	should_simulation_end(t_philo *philo, int should_end)
 {
-	pthread_mutex_lock(&philo->data->mtx_end);
-	if (should_end == TRUE || philo->data->end_flag == 1)
+	if (should_end == TRUE || philo->project->should_end == 1)
 	{
 		if (should_end == TRUE)
-			philo->data->end_flag = 1;
-		pthread_mutex_unlock(&philo->data->mtx_end);
+			philo->project->should_end = 1;
 		return (TRUE);
 	}
-	pthread_mutex_unlock(&philo->data->mtx_end);
 	return (FALSE);
 }

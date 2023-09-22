@@ -6,13 +6,12 @@
 /*   By: jmarinho <jmarinho@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/19 15:32:02 by jmarinho          #+#    #+#             */
-/*   Updated: 2023/09/19 15:39:10 by jmarinho         ###   ########.fr       */
+/*   Updated: 2023/09/22 15:43:09 by jmarinho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../philo.h"
 
-// this is a function that will convert a string to an integer
 int	ft_atoi(const char *str)
 {
 	int		i;
@@ -22,14 +21,6 @@ int	ft_atoi(const char *str)
 	i = 0;
 	res = 0;
 	sig = 1;
-	while ((str[i] >= '\t' && str[i] <= '\r') || str[i] == ' ')
-		i++;
-	if (str[i] == '-' || str[i] == '+')
-	{
-		if (str[i] == '-')
-			sig = -1;
-		i++;
-	}
 	while (str[i] >= '0' && str[i] <= '9')
 	{
 		res = res * 10 + str[i] - '0';
@@ -38,8 +29,6 @@ int	ft_atoi(const char *str)
 	return (sig * res);
 }
 
-// this is a function the will print the error, free allocated memory and exit
-// the program
 void	exit_error(char *str, t_project *project, int flag)
 {
 	printf("%s", str);
@@ -55,7 +44,6 @@ void	exit_error(char *str, t_project *project, int flag)
 	exit (1);
 }
 
-// this is a function that will free the mutexes and the join the threads
 void	free_mtxs(t_project *project)
 {
 	int	i;
@@ -65,18 +53,12 @@ void	free_mtxs(t_project *project)
 		free(project->philo);
 	if (project->mtx_fork)
 	{
-		while (++i < project->n_philo)
+		while (++i < project->nbr_philo)
 			pthread_mutex_destroy(&project->mtx_fork[i]);
 		free(project->mtx_fork);
 	}
-	pthread_mutex_destroy(&project->mtx_print);
-	pthread_mutex_destroy(&project->mtx_eat);
-	pthread_mutex_destroy(&project->mtx_end);
 }
 
-// this is a function that will return the current time in milliseconds
-// we return the number of seconds x1000 to get number of miliseconds
-// plus the number of microseconds /1000 to get the remaining miliseconds
 long long	get_current_time(void)
 {
 	struct timeval	current_time;
