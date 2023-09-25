@@ -6,7 +6,7 @@
 /*   By: jmarinho <jmarinho@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/19 15:31:48 by jmarinho          #+#    #+#             */
-/*   Updated: 2023/09/22 15:42:48 by jmarinho         ###   ########.fr       */
+/*   Updated: 2023/09/25 12:23:48 by jmarinho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	*start_simulation(void *ptr)
 			break ;
 		}
 		if (philo->id % 2 == 0)
-			usleep(4000);
+			usleep(8000);
 		if (philo_grab_forks(philo) == -1)
 			break ;
 		if (philo_is_eating(philo) == -1)

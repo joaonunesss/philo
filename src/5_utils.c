@@ -6,7 +6,7 @@
 /*   By: jmarinho <jmarinho@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/19 15:32:02 by jmarinho          #+#    #+#             */
-/*   Updated: 2023/09/22 15:43:09 by jmarinho         ###   ########.fr       */
+/*   Updated: 2023/09/22 15:59:34 by jmarinho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	exit_error(char *str, t_project *project, int flag)
 	}
 	if (flag == 3)
 		free_mtxs(project);
-	exit (1);
+	exit (EXIT_FAILURE);
 }
 
 void	free_mtxs(t_project *project)

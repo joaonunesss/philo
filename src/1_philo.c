@@ -6,7 +6,7 @@
 /*   By: jmarinho <jmarinho@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/19 15:31:35 by jmarinho          #+#    #+#             */
-/*   Updated: 2023/09/22 15:42:42 by jmarinho         ###   ########.fr       */
+/*   Updated: 2023/09/25 11:34:37 by jmarinho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	check_args(int ac, char *av[])
 			if (av[i][j] == '-')
 				j++;
 			if (av[i][j] < '0' || av[i][j] > '9')
-				exit_error(RED"Error: Arguments must be positive numbers\n"RESET,
+				exit_error(RED"Error: Arguments must be numbers\n"RESET,
 					NULL, 0);
 		}
 	}

@@ -6,7 +6,7 @@
 /*   By: jmarinho <jmarinho@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/19 15:31:39 by jmarinho          #+#    #+#             */
-/*   Updated: 2023/09/22 15:36:58 by jmarinho         ###   ########.fr       */
+/*   Updated: 2023/09/25 12:23:28 by jmarinho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ typedef struct s_project
 	int				should_end;
 	long long		start_time;
 	pthread_mutex_t	*mtx_fork;
+	pthread_mutex_t pick_forks;
 	t_philo			*philo;
 }	t_project;
 

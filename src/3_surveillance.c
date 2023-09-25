@@ -6,7 +6,7 @@
 /*   By: jmarinho <jmarinho@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/19 15:31:51 by jmarinho          #+#    #+#             */
-/*   Updated: 2023/09/22 15:42:37 by jmarinho         ###   ########.fr       */
+/*   Updated: 2023/09/25 11:52:24 by jmarinho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int	dead_or_full(t_philo *philo)
 	if ((get_current_time() - philo->last_meal) >= philo->project->time_to_die)
 	{
 		print_status(philo, RED"died"RESET);
-		should_simulation_end(philo, TRUE);
+		philo->project->should_end = 1;
 		return (TRUE);
 	}
 	if ((philo->project->times_must_eat > 0)
@@ -26,7 +26,7 @@ int	dead_or_full(t_philo *philo)
 		philo->project->nbr_philo_full++;
 		if (philo->project->nbr_philo_full == philo->project->nbr_philo)
 		{
-			should_simulation_end(philo, TRUE);
+			philo->project->should_end = 1;
 			print_status(philo, NULL);
 			return (TRUE);
 		}

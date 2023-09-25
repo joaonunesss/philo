@@ -6,7 +6,7 @@
 #    By: jmarinho <jmarinho@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/19 15:16:10 by jmarinho          #+#    #+#              #
-#    Updated: 2023/09/22 14:25:54 by jmarinho         ###   ########.fr        #
+#    Updated: 2023/09/25 11:53:24 by jmarinho         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,9 +15,8 @@ GREEN := \033[0;32m
 YELLOW := \033[0;33m
 RESET := \033[0m
 
-
 NAME = philo
-FLAGS = -Wall -Wextra -Werror -g -pthread -fsanitize=thread
+FLAGS = -Wall -Wextra -Werror -g -pthread 
 RM = rm -f
 SRCS = src/1_philo.c src/2_initializations.c src/3_surveillance.c \
 		src/4_simulation_utils.c src/5_utils.c
@@ -25,7 +24,7 @@ SRCS = src/1_philo.c src/2_initializations.c src/3_surveillance.c \
 OBJS = $(SRCS:.c=.o)
 
 all: $(OBJS)
-	@cc $(FLAGS) $(OBJS) -o $(NAME) -I.
+	@cc $(FLAGS) $(OBJS) -o $(NAME)
 	printf "$(GREEN)Executable ./$(NAME) was created.\n$(RESET)"
 
 clean:

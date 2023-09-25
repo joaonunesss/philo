@@ -6,7 +6,7 @@
 /*   By: jmarinho <jmarinho@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/19 15:31:56 by jmarinho          #+#    #+#             */
-/*   Updated: 2023/09/22 15:42:54 by jmarinho         ###   ########.fr       */
+/*   Updated: 2023/09/25 12:24:16 by jmarinho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 int	philo_grab_forks(t_philo *philo)
 {
+	pthread_mutex_lock(&philo->project->pick_forks);
 	if (philo->project->should_end == 1
 		|| philo->project->nbr_philo_full == philo->project->nbr_philo)
 		return (-1);
@@ -31,6 +32,7 @@ int	philo_grab_forks(t_philo *philo)
 		pthread_mutex_lock(philo->fork_left);
 		print_status(philo, YELLOW"has taken a fork"RESET);
 	}
+	pthread_mutex_unlock(&philo->project->pick_forks);
 	return (0);
 }
 
@@ -69,7 +71,7 @@ void	print_status(t_philo *philo, char *str)
 {
 	long long	timestamp;
 
-	if (should_simulation_end(philo, FALSE) == FALSE)
+	if (philo->project->should_end ==				 0)
 	{
 		timestamp = get_current_time() - philo->project->start_time;
 		printf("%lld %d %s\n", timestamp, philo->id, str);
@@ -77,15 +79,4 @@ void	print_status(t_philo *philo, char *str)
 	if (str == NULL)
 		printf(GREEN"All philosophers ate %d times\n"RESET,
 			philo->project->times_must_eat);
-}
-
-int	should_simulation_end(t_philo *philo, int should_end)
-{
-	if (should_end == TRUE || philo->project->should_end == 1)
-	{
-		if (should_end == TRUE)
-			philo->project->should_end = 1;
-		return (TRUE);
-	}
-	return (FALSE);
 }
