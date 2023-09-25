@@ -6,7 +6,7 @@
 #    By: jmarinho <jmarinho@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/19 15:16:10 by jmarinho          #+#    #+#              #
-#    Updated: 2023/09/25 11:53:24 by jmarinho         ###   ########.fr        #
+#    Updated: 2023/09/25 12:51:28 by jmarinho         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,7 @@ YELLOW := \033[0;33m
 RESET := \033[0m
 
 NAME = philo
-FLAGS = -Wall -Wextra -Werror -g -pthread 
+FLAGS = -Wall -Wextra -Werror -g -pthread -fsanitize=thread
 RM = rm -f
 SRCS = src/1_philo.c src/2_initializations.c src/3_surveillance.c \
 		src/4_simulation_utils.c src/5_utils.c
