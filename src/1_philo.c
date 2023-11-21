@@ -6,7 +6,7 @@
 /*   By: jmarinho <jmarinho@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/19 15:31:35 by jmarinho          #+#    #+#             */
-/*   Updated: 2023/09/25 11:34:37 by jmarinho         ###   ########.fr       */
+/*   Updated: 2023/09/28 11:47:13 by jmarinho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,20 +20,20 @@ void	check_args(int ac, char *av[])
 	if (ac < 5 || ac > 6)
 	{
 		printf(RED"Number of arguments not valid\n"RESET);
-		exit (1);
+		exit (EXIT_FAILURE);
 	}
-	i = 0;
-	while (++i < ac)
+	i = 1;
+	while (i < ac)
 	{
-		j = -1;
-		while (av[i][++j])
+		j = 0;
+		while (av[i][j])
 		{
-			if (av[i][j] == '-')
-				j++;
 			if (av[i][j] < '0' || av[i][j] > '9')
-				exit_error(RED"Error: Arguments must be numbers\n"RESET,
+				exit_error(RED"Error: Arguments must be positive numbers\n"RESET,
 					NULL, 0);
+			j++;
 		}
+		i++;
 	}
 }
 

@@ -6,7 +6,7 @@
 /*   By: jmarinho <jmarinho@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/19 15:31:39 by jmarinho          #+#    #+#             */
-/*   Updated: 2023/09/25 12:53:48 by jmarinho         ###   ########.fr       */
+/*   Updated: 2023/11/21 14:36:04 by jmarinho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,12 @@
 # define WHITE 	"\033[1;37m"
 # define RESET 	"\033[0m"
 
+# define ERR_PHILO "Error: There must be at least one philosopher\n"
+# define ERR_TIME "Error: Time to die must be greater than 0\n"
+# define ERR_EAT "Error: Time to eat must be greater than 0\n"
+# define ERR_SLEEP "Error: Time to sleep must be greater than 0\n"
+# define ERR_MUST_EAT "Error: Times must eat must be greater than 0\n"
+
 typedef struct s_philo
 {
 	int					id;
@@ -53,7 +59,9 @@ typedef struct s_project
 	int				should_end;
 	long long		start_time;
 	pthread_mutex_t	*mtx_fork;
-	t_philo			*philo;
+	pthread_mutex_t	mtx_eating;
+	pthread_mutex_t	mtx_surveillance;
+	struct s_philo	*philo;
 }	t_project;
 
 void		check_args(int ac, char **av);
@@ -67,12 +75,13 @@ int			dead_or_full(t_philo *p);
 int			should_simulation_end(t_philo *philo, int should_end);
 void		print_status(t_philo *philo, char *str);
 void		eat(t_philo *philo);
-int			ft_atoi(const char *str);
+int			ft_atoi(char *str);
 void		exit_error(char *str, t_project *project, int flag);
 void		free_mtxs(t_project *project);
 long long	get_current_time(void);
 int			philo_grab_forks(t_philo *philo);
 int			philo_is_eating(t_philo *philo);
 int			philo_is_sleeping(t_philo *philo);
+void		init_project_aux(t_project *project, int ac, char **av);
 
 #endif
