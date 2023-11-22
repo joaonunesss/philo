@@ -6,7 +6,7 @@
 /*   By: jmarinho <jmarinho@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/19 15:31:51 by jmarinho          #+#    #+#             */
-/*   Updated: 2023/11/21 15:54:16 by jmarinho         ###   ########.fr       */
+/*   Updated: 2023/11/22 11:57:48 by jmarinho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,6 @@ void	surveillance(t_project *project)
 			if (should_end == FALSE && dead_or_full(&project->philo[i]) == TRUE)
 				should_end = TRUE;
 		}
-		usleep(500);
+		usleep(80);
 	}
 }

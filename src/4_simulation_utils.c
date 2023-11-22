@@ -6,7 +6,7 @@
 /*   By: jmarinho <jmarinho@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/19 15:31:56 by jmarinho          #+#    #+#             */
-/*   Updated: 2023/11/21 15:49:36 by jmarinho         ###   ########.fr       */
+/*   Updated: 2023/11/22 12:05:31 by jmarinho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ void	print_status(t_philo *philo, char *str)
 	long long	timestamp;
 
 	pthread_mutex_lock(&philo->project->mtx_surveillance);
-	if (philo->project->should_end == FALSE)
+	if (philo->project->should_end == FALSE && str != NULL)
 	{
 		timestamp = get_current_time() - philo->project->start_time;
 		printf("%lld %d %s\n", timestamp, philo->id, str);

@@ -6,7 +6,7 @@
 /*   By: jmarinho <jmarinho@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/19 15:31:48 by jmarinho          #+#    #+#             */
-/*   Updated: 2023/11/21 15:54:00 by jmarinho         ###   ########.fr       */
+/*   Updated: 2023/11/22 11:56:52 by jmarinho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@ void	*start_simulation(void *ptr)
 			print_status(philo, YELLOW"has taken a fork"RESET);
 			break ;
 		}
+		if (philo->id % 2 == 0)
+			usleep(4000);
 		if (philo_grab_forks(philo) == -1)
 			break ;
 		if (philo_is_eating(philo) == -1)
